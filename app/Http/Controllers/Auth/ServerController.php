@@ -52,7 +52,7 @@ class ServerController extends Controller
         }
 
         if($request->getClientIp() !== $query->response->data) {
-            redirect()->route('server.login.warn');
+            return redirect()->route('server.login.warn');
         }
 
         return redirect()->route('server.login.end');
