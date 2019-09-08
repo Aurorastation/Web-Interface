@@ -104,7 +104,7 @@ class LoginController extends Controller
 
         // If user was trying to auth, then we send them to finish authing.
         if($request->session()->has('server_client_token')) {
-            return redirect()->route('server.login.end');
+            return redirect()->route('server.login.begin');
         }
         return redirect('home');
     }
