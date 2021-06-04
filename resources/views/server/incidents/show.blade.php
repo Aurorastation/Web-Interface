@@ -63,12 +63,15 @@
                         <td><b>Game ID:</b></td>
                         <td>{{$incident->game_id}}</td>
                     </tr>
-                    @if($can_edit && !isset($incident->deleted_at))
-                        <tr>
-                            <td><b>Actions</b></td>
+                    @if($can_edit)
+                    <tr>
+                        <td><b>Actions</b></td>
+                        @if(!isset($incident->deleted_at))
                             <td><a href="{{route('server.incidents.delete.get',['incident_id'=>$incident->id])}}" class="btn btn-danger" role="button">Delete</a></td>
-                        </tr>
-
+                        @else
+                            <td><a href="{{route('server.incidents.restore.get',['incident_id'=>$incident->id])}}" class="btn btn-success @cannot("server_players_incidents_edit") disabled @endcan()" role="button">Restore</a></td>
+                        @endif
+                    </tr>
                     @endif()
                     </tbody>
                 </table>

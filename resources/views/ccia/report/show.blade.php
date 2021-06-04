@@ -87,7 +87,11 @@
                     @foreach($transcripts as $transcript)
                     <tr>
                         <td>{{$transcript->id}}</td>
-                        <td>{{$transcript->character->name}}</td>
+                        @if($transcript->character)
+                            <td><a href="{{route('server.chars.show.get',['char_id'=>$transcript->character->id])}}">{{$transcript->character->name}}</a></td>
+                        @else()
+                            <td>Error - Unable to determine character name</td>
+                        @endif()
                         <td>{{$transcript->interviewer}}</td>
                         <td>
                             @if($transcript->antag_involvement === 0)
