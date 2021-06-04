@@ -31,13 +31,13 @@ class CargoController extends Controller
 
     public function getItemData(Request $request)
     {
-        $chars = ServerCargoItem::select(['id', 'name', 'supplier', 'categories']);
+        $chars = ServerCargoItem::select(['id', 'name', 'supplier', 'categories', 'price']);
 
         return Datatables::of($chars)
             ->removeColumn('id')
             ->editColumn('name', '<a href="{{route(\'server.cargo.item.show\',[\'item\'=>$id])}}">{{$name}}</a>')
             ->addColumn('action', '<p><a href="{{route(\'server.cargo.item.show\',[\'item\'=>$id])}}" class="btn btn-success" role="button">Show</a></p>')
-            ->rawColumns([0, 3])
+            ->rawColumns([0, 4])
             ->make();
     }
 }
