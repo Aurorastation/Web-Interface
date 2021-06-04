@@ -140,6 +140,7 @@ Route::group(['middleware' => 'web'], function () {
         Route::group(['prefix' => 'incidents'], function () {
             Route::get('/{incident_id}/show', ['as' => 'server.incidents.show.get', 'uses' => 'Server\IncidentController@getShow']);
             Route::get('/{incident_id}/delete', ['as' => 'server.incidents.delete.get', 'uses' => 'Server\IncidentController@getDelete']);
+            Route::get('/{incident_id}/restore', ['as' => 'server.incidents.restore.get', 'uses' => 'Server\IncidentController@getRestore']);
             Route::get('/data/char/{char_id}', ['as' => 'server.incidents.data.char', 'uses' => 'Server\IncidentController@getIncidentDataChar']);
         });
 

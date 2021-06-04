@@ -68,7 +68,31 @@ class IncidentController extends Controller
         Log::notice('perm.incidents.delete - Incident has been deleted', ['user_id' => $request->user()->user_id, 'incident_id' => $incident->id]);
         $incident->delete();
 
-        return redirect()->route('server.chars.show.get', ['char_id' => $char_id]);
+        if($request->user()->can('server_players_incidents_show')){
+            return redirect()->route('server.incidents.show.get', ['incident_id' => $incident->id]);
+        } else {
+            return redirect()->route('server.chars.show.get', ['char_id' => $char_id]);
+        }
+
+    }
+
+    public function getRestore($incident_id, Request $request)
+    {
+        $incident = ServerIncident::withTrashed()->findOrFail($incident_id);
+
+        if (!$request->user()->can('server_players_incidents_edit')){
+            abort('403', 'You do not have the required permission');
+        }
+        $char_id = $incident->char_id;
+
+        Log::notice('perm.incidents.restore - Incident has been restored', ['user_id' => $request->user()->user_id, 'incident_id' => $incident->id]);
+        $incident->restore();
+
+        if($request->user()->can('server_players_incidents_show')){
+            return redirect()->route('server.incidents.show.get', ['incident_id' => $incident->id]);
+        } else {
+            return redirect()->route('server.chars.show.get', ['char_id' => $char_id]);
+        }
     }
 
     public function getIncidentDataChar($char_id, Request $request)
@@ -109,7 +133,7 @@ class IncidentController extends Controller
 
     private function can_see($char_id, $user)
     {
-        //Check if user has char show persm or is the owner of the char
+        //Check if user has char show perms or is the owner of the char
         if ($user->can('server_players_incidents_show'))
             return TRUE;
         if ($user->checkPlayerChar($char_id) == TRUE)
