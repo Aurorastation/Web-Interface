@@ -35,6 +35,7 @@
                                 <th>Item Name</th>
                                 <th>Supplier</th>
                                 <th>Categories</th>
+                                <th>Price</th>
                                 <th>Action</th>
                             </tr>
                             </thead>
@@ -59,6 +60,7 @@
                     { data: 'name', name: 'name' },
                     { data: 'supplier', name: 'supplier' },
                     { data: 'categories', name: 'categories' },
+                    { data: 'price', name: 'price' },
                     { data: 'action', name: 'action' }
                 ]
             });
