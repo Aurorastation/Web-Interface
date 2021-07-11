@@ -20,6 +20,7 @@
 
 namespace App\Http\Controllers\User;
 
+use App\Models\ServerPlayer;
 use Illuminate\Http\Request;
 
 use DB;
@@ -116,6 +117,13 @@ class LinkController extends Controller
         ]);
 
         $ckey = Helpers::sanitize_ckey($request->input("Byond_Username"));
+
+        #Check if a player with that ckey exists
+        $player_count = ServerPlayer::where('ckey',$this)->count();
+
+        if($player_count != 1){
+            return redirect()->route('user.link')->withErrors(array("Could not find player with that ckey. You need to join on the server before you can link your account."));
+        }
 
         //Only add a new linking request if there is no existing one (where the deleted_at date is not set)
         if (DB::connection('server')->table('player_linking')->where('forum_id', '=', $request->user()->user_id)->where('deleted_at', '=', NULL)->count() == 0) {
