@@ -119,10 +119,10 @@ class LinkController extends Controller
         $ckey = Helpers::sanitize_ckey($request->input("Byond_Username"));
 
         #Check if a player with that ckey exists
-        $player_count = ServerPlayer::where('ckey',$this)->count();
+        $player_count = ServerPlayer::where('ckey',$ckey)->count();
 
         if($player_count != 1){
-            return redirect()->route('user.link')->withErrors(array("Could not find player with that ckey. You need to join on the server before you can link your account."));
+            return redirect()->route('user.link')->withErrors(array("Could not find player with the ckey".$ckey.". You need to join on the server before you can link your account."));
         }
 
         //Only add a new linking request if there is no existing one (where the deleted_at date is not set)
@@ -144,7 +144,6 @@ class LinkController extends Controller
         } else {
             return redirect()->route('user.link')->withErrors(array("Could not create linking request, because there is already a active linking request"));
         }
-
 
     }
 }
