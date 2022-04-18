@@ -208,7 +208,7 @@ class NewsController extends Controller
             })
             ->editColumn('body', '{{str_limit($body,50)}}')
             ->addColumn('action', '<div class="btn-group" role="group"><a href="{{route(\'server.news.show.get\',[\'news_id\'=>$id])}}" class="btn btn-success" role="button">Show</a>  @can(\'server_news_edit\')<a href="{{route(\'server.news.edit.get\',[\'news_id\'=>$id])}}" class="btn btn-info" role="button">Edit</a><a href="{{route(\'server.news.delete\',[\'news_id\'=>$id])}}" class="btn btn-danger" role="button">Delete</a>@endcan()</div>')
-            ->rawColumns([0, 3])
+            ->rawColumns(['body', 'action'])
             ->make();
     }
 }

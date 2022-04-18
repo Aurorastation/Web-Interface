@@ -24,6 +24,7 @@ use Illuminate\Database\Eloquent\Model;
 class SitePermission extends Model
 {
     protected $table = 'permissions';
+    protected $connection = 'wi';
 
     public function roles()
     {

@@ -1,0 +1,9 @@
+.env
+.docker.env
+.idea
+storage/logs/*.log
+storage/app/server_logs/*
+storage/framework/cache/*
+storage/framework/sessions/*
+storage/framework/views/*
+node_modules/

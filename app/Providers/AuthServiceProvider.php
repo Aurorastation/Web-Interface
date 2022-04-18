@@ -21,6 +21,7 @@
 namespace App\Providers;
 
 use Auth;
+use Illuminate\Support\Facades\Log;
 use App\Models\SitePermission;
 
 use Illuminate\Contracts\Auth\Access\Gate as GateContract;
@@ -72,6 +73,11 @@ class AuthServiceProvider extends ServiceProvider
 
     protected function getPermissions()
     {
-        return SitePermission::with('roles')->get();
+        try {
+            return SitePermission::with('roles')->get();
+        } catch(\Exception $e){ //Ugly hack for when the permissions table doesnt exist.
+            Log::error("Error while Fetching Permissions: ".$e);
+            return [];
+        }
     }
 }

@@ -185,7 +185,7 @@ class PlayerController extends Controller
 
         return Datatables::of($players)
             ->editColumn('ckey', '<a href="{{route(\'server.players.show\',[\'player_id\'=>$id])}}">{{$ckey}}</a>')
-            ->rawColumns([0])
+            ->rawColumns(['ckey'])
             ->make();
     }
 }

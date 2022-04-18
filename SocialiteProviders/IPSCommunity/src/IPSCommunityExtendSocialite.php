@@ -11,6 +11,6 @@ class IPSCommunityExtendSocialite
      */
     public function handle(SocialiteWasCalled $socialiteWasCalled)
     {
-        $socialiteWasCalled->extendSocialite('ipscommunity', __NAMESPACE__.'\Provider');
+        $socialiteWasCalled->extendSocialite('ipscommunity', \SocialiteProviders\IPSCommunity\Provider::class);
     }
 }
