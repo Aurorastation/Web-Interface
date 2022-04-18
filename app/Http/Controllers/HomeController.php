@@ -26,4 +26,8 @@ class HomeController extends Controller
     {
         return view('home',["user"=>Auth::user()]);
     }
+
+    public function welcome(){
+        return view('welcome');
+    }
 }

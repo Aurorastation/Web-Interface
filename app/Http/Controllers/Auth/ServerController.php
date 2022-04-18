@@ -48,12 +48,24 @@ class ServerController extends Controller
                 'clienttoken' => $client_token,
             ]);
         } catch (\Exception $e) {
-            Log::error("server.login - Error while fetching client IP from Game-Server: ".$e);
-            abort(500, $e->getMessage());
+            Log::error("server.login - Error while fetching client IP from Game-Server: ".$e->getMessage());
+            abort(500, "Error while authenticating with Game-Server");
         }
-        if ($query->response->statuscode != '200') {
-            Log::error("server.login - Invalid Status-Code while fetching client IP from Game-Server: ".$query->response->statuscode);
-            abort($query->response->statuscode);
+        if ($query->response->statuscode == '403') {
+            Log::error("server.login - External Auth is disabled. StatusCode: ".$query->response->statuscode);
+            abort(403, "External Authentication is disabled at the moment.");
+        }
+        else if ($query->response->statuscode == '404') {
+            Log::error("server.login - Unauthed Client with auth token not found. StatusCode: ".$query->response->statuscode);
+            abort(404, "Unauthenticated Client could not be found - You might be logged in already");
+        }
+        else if ($query->response->statuscode == '500') {
+            Log::error("server.login - Error while fetching client with specified auth token. StatusCode: ".$query->response->statuscode);
+            abort("A server-error occurred during the authentication.");
+        }
+        else if ($query->response->statuscode != '200') {
+            Log::error("server.login - Undetermined gameserver error while trying to authenticate client. StatusCode: ".$query->response->statuscode);
+            abort($query->response->statuscode, "A error occured while trying to authenticate the client.");
         }
 
         if($request->getClientIp() !== $query->response->data) {

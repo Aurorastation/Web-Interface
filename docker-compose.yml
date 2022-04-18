@@ -1,0 +1,14 @@
+version: "3"
+services:
+  aurora-wi:
+    build: .
+    image: aurora-wi
+    restart: always
+    environment:
+      fpm.pool.clear_env: no
+      php.variables_order: "EGPCS"
+    env_file:
+      - docker.env
+    ports:
+      - 80:80
+      - 443:443

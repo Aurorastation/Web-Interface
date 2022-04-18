@@ -137,7 +137,7 @@ class DocumentsController extends Controller
             ->removeColumn('id')
             ->editColumn('name', '<a href="{{route(\'server.documents.show.get\',[\'document\'=>$id])}}">{{$name}}</a>')
             ->addColumn('action', '<div class="btn-group"><a href="{{route(\'server.documents.show.get\',[\'document\'=>$id])}}" class="btn btn-success" role="button">Show</a>  @can(\'server_documents_edit\')<a href="{{route(\'server.documents.edit.get\',[\'book\'=>$id])}}" class="btn btn-info" role="button">Edit</a><a href="{{route(\'server.documents.delete\',[\'book\'=>$id])}}" class="btn btn-danger" role="button">Delete</a>@endcan()</div>')
-            ->rawColumns([0, 3])
+            ->rawColumns(['name', 'action'])
             ->make();
     }
 }
