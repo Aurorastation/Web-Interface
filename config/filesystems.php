@@ -65,7 +65,8 @@ return [
             'key' => env('SERVERLOGS_S3_ACCESS_KEY'),
             'secret' => env('SERVERLOGS_S3_SECRET_KEY'),
             'bucket' => env('SERVERLOGS_S3_BUCKET'),
-            'url' => env('SERVERLOGS_S3_URL'),
+            'region' => env('SERVERLOGS_S3_REGION'),
+            'endpoint' => env('SERVERLOGS_S3_ENDPOINT'),
         ],
 
         's3' => [

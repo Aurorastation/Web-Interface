@@ -146,7 +146,7 @@ return [
         App\Providers\FormServiceProvider::class,
 
         Collective\Html\HtmlServiceProvider::class,
-        SocialiteProviders\Generators\GeneratorsServiceProvider::class,
+        //SocialiteProviders\Generators\GeneratorsServiceProvider::class,
     ],
 
     /*

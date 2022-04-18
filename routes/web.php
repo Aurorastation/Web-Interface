@@ -59,7 +59,7 @@ Route::group(['middleware' => 'web'], function () {
     Route::any('login/sso_server', ['as' => 'login.sso', 'uses' => 'Auth\ServerSSOController@sso_server']);
 
     Route::get('login', 'Auth\LoginController@login')->name('login');
-    Route::get('login/callback', 'Auth\LoginController@handleProviderCallback')->name('login.callback');
+    Route::any('login/callback', 'Auth\LoginController@handleProviderCallback')->name('login.callback');
     Route::any('logout', 'Auth\LoginController@logout')->name('logout');
 
     Route::group(['prefix' => 'server'], function () {
