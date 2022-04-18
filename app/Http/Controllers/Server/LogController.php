@@ -31,7 +31,7 @@ class LogController extends Controller
         return Datatables::of($logs)
             ->removeColumn('id')
             ->addColumn('action', '<p><a href="{{route(\'server.log.show.get\',[\'log_id\'=>$id])}}" class="btn btn-success" role="button">Download</a></p>')
-            ->rawColumns([0])
+            ->rawColumns(['action'])
             ->make();
     }
 
@@ -40,6 +40,11 @@ class LogController extends Controller
             abort('403', 'You do not have the required permission.');
 
         $logfile = ServerLog::findOrFail($log_id);
+
+        if(Storage::disk('server_logs')->missing($logfile->filename)){
+            Log::error('server.log.download - Log Download Error - File missing on Storage', ['user_id' => $request->user()->user_id, 'log_id' => $logfile->id, 'filename' => $logfile->filename]);
+            return abort(404, "Log file missing - Contact Host");
+        }
 
         Log::notice('server.log.download - Log Downloaded', ['user_id' => $request->user()->user_id, 'log_id' => $logfile->id]);
 
@@ -53,6 +58,11 @@ class LogController extends Controller
         $logfile = ServerLog::where('gameid',$game_id)->first();
         if(!isset($logfile)){
             abort('404','There is no log file for the requested game id.');
+        }
+
+        if(Storage::disk('server_logs')->missing($logfile->filename)){
+            Log::error('server.log.download - Log Download Error - File missing on Storage', ['user_id' => $request->user()->user_id, 'log_id' => $logfile->id, 'filename' => $logfile->filename]);
+            abort(404, "Log file missing - Contact Host");
         }
 
         Log::notice('server.log.download - Log Downloaded', ['user_id' => $request->user()->user_id, 'log_id' => $logfile->id]);

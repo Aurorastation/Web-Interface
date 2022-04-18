@@ -37,7 +37,7 @@ class CargoController extends Controller
             ->removeColumn('id')
             ->editColumn('name', '<a href="{{route(\'server.cargo.item.show\',[\'item\'=>$id])}}">{{$name}}</a>')
             ->addColumn('action', '<p><a href="{{route(\'server.cargo.item.show\',[\'item\'=>$id])}}" class="btn btn-success" role="button">Show</a></p>')
-            ->rawColumns([0, 4])
+            ->rawColumns(['name', 'action'])
             ->make();
     }
 }

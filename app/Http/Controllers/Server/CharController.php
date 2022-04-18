@@ -138,7 +138,7 @@ class CharController extends Controller
 
         if($request->user()->can('server_stats_show')){
             $datatable->editColumn('game_id', '<a href="{{route(\'server.stats.antag\',[\'game_id\'=>$game_id])}}">{{$game_id}}</a>')
-                ->rawColumns([0]);
+                ->rawColumns(['game_id']);
         }
 
         return $datatable->make();
@@ -155,7 +155,7 @@ class CharController extends Controller
             ->removeColumn('id')
             ->editColumn('name', '<a href="{{route(\'server.chars.show.get\',[\'char\'=>$id])}}">{{$name}}</a>')
             ->addColumn('action', '<p><a href="{{route(\'server.chars.show.get\',[\'char\'=>$id])}}" class="btn btn-success" role="button">Show</a></p>')
-            ->rawColumns([0, 2])
+            ->rawColumns(['name', 'action'])
             ->make();
     }
 
@@ -167,7 +167,7 @@ class CharController extends Controller
             ->removeColumn('id')
             ->editColumn('name', '<a href="{{route(\'server.chars.show.get\',[\'char\'=>$id])}}">{{$name}}</a>')
             ->addColumn('action', '<p><a href="{{route(\'server.chars.show.get\',[\'char\'=>$id])}}" class="btn btn-success" role="button">Show</a></p>')
-            ->rawColumns([0, 1])
+            ->rawColumns(['name', 'action'])
             ->make();
     }
 
@@ -184,7 +184,7 @@ class CharController extends Controller
             ->removeColumn('id')
             ->editColumn('name', '<a href="{{route(\'server.chars.show.get\',[\'char\'=>$id])}}">{{$name}}</a>')
             ->addColumn('action', '<p><a href="{{route(\'server.chars.show.get\',[\'char\'=>$id])}}" class="btn btn-success" role="button">Show</a></p>')
-            ->rawColumns([0, 2])
+            ->rawColumns(['name', 'action'])
             ->make();
     }
 }

@@ -65,7 +65,7 @@ class ContractController extends Controller
 
         return Datatables::of($contracts)
             ->editColumn('title', '<b><a href="{{route(\'syndie.contracts.show\',[\'contract\'=>$contract_id])}}">{{$title}}</a></b>')
-            ->rawColumns([0])
+            ->rawColumns(['title'])
             ->make();
     }
 

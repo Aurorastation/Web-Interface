@@ -116,7 +116,7 @@ class IncidentController extends Controller
             ->editColumn('fine', '{{$fine}} Credits')
             ->addColumn('status','@if(isset($deleted_at)) Deleted @else() Active @endif()')
             ->addColumn('action', '<p><a href="{{route(\'server.incidents.show.get\',[\'incident_id\'=>$id])}}" class="btn btn-success" role="button">Show</a></p>')
-            ->rawColumns([0, 5])
+            ->rawColumns(['datetime', 'action'])
             ->make();
     }
 

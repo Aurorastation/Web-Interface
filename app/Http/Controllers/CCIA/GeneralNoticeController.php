@@ -137,7 +137,7 @@
             return Datatables::of($data)
                 ->editColumn('title', '<a href="{{ route(\'ccia.generalnotice.edit.get\', [\'id\' => $id]) }}">{{$title}}</a>')
                 ->addColumn('action', '<div class="btn-group"><a href="{{route(\'ccia.generalnotice.show.get\',[\'id\'=>$id])}}" class="btn btn-success" role="button">Show</a>  @can(\'ccia_general_notice_edit\')<a href="{{route(\'ccia.generalnotice.edit.get\',[\'id\'=>$id])}}" class="btn btn-info" role="button">Edit</a><a href="{{route(\'ccia.generalnotice.delete\',[\'id\'=>$id])}}" class="btn btn-danger" role="button">Delete</a>@endcan()</div>')
-                ->rawColumns([0,1])
+                ->rawColumns(['title', 'action'])
                 ->make();
             
         }

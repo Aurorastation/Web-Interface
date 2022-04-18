@@ -136,7 +136,7 @@ class FormController extends Controller
             ->removeColumn('form_id')
             ->editColumn('name', '<a href="{{route(\'admin.forms.edit.get\',[\'form\'=>$form_id])}}">{{$name}}</a>')
             ->addColumn('action', '<p><a href="{{route(\'admin.forms.edit.get\',[\'form\'=>$form_id])}}" class="btn btn-info" role="button">Show/Edit</a>  @can(\'server_forms_edit\')<a href="{{route(\'admin.forms.delete\',[\'form\'=>$form_id])}}" class="btn btn-danger" role="button">Delete</a>@endcan()</p>')
-            ->rawColumns([0,2])
+            ->rawColumns(['name', 'action'])
             ->make();
     }
 }
