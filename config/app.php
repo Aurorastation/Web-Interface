@@ -146,7 +146,6 @@ return [
         App\Providers\FormServiceProvider::class,
 
         Collective\Html\HtmlServiceProvider::class,
-        Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
         SocialiteProviders\Generators\GeneratorsServiceProvider::class,
     ],
 

@@ -3,6 +3,7 @@
 /public/storage
 Homestead.yaml
 Homestead.json
+docker.env
 .env
 .idea
 _ide_helper.php

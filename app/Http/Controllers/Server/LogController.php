@@ -43,7 +43,7 @@ class LogController extends Controller
 
         Log::notice('server.log.download - Log Downloaded', ['user_id' => $request->user()->user_id, 'log_id' => $logfile->id]);
 
-        return Storage::download($logfile->filename);
+        return Storage::disk('server_logs')->download($logfile->filename);
     }
 
     public function getLogByGameId(Request $request, $game_id){
@@ -57,7 +57,7 @@ class LogController extends Controller
 
         Log::notice('server.log.download - Log Downloaded', ['user_id' => $request->user()->user_id, 'log_id' => $logfile->id]);
 
-        return Storage::download($logfile->filename);
+        return Storage::disk('server_logs')->download($logfile->filename);
     }
 
     public function upload(Request $request){
@@ -78,7 +78,7 @@ class LogController extends Controller
             return response([$validator->messages()],400);
         }
 
-        $path = $request->logfile->store('server_logs');
+        $path = $request->logfile->store('server_logs','server_logs');
 
         $logdata = new ServerLog();
         $logdata->filename = $path;

@@ -60,6 +60,14 @@ return [
             'visibility' => 'public',
         ],
 
+        'server_logs' => [
+            'driver' => 's3',
+            'key' => env('SERVERLOGS_S3_ACCESS_KEY'),
+            'secret' => env('SERVERLOGS_S3_SECRET_KEY'),
+            'bucket' => env('SERVERLOGS_S3_BUCKET'),
+            'url' => env('SERVERLOGS_S3_URL'),
+        ],
+
         's3' => [
             'driver' => 's3',
             'key' => env('AWS_ACCESS_KEY_ID'),

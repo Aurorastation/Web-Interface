@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Be right back.</title>
+    <title>No User Linked.</title>
 
     <link href="https://fonts.googleapis.com/css?family=Lato:100" rel="stylesheet" type="text/css">
 
@@ -49,7 +49,6 @@
                 <li><a href="https://byond.aurorastation.org/user/link">Click on this Link</a> and log in with your forum account.</li>
                 <li>Create a linking request and follow further instructions on the linking page.</li>
             </ul>
-            </p>
         </dvi>
     </div>
 </div>

@@ -52,9 +52,7 @@
 Route::group(['middleware' => 'web'], function () {
 
     Route::group(['middleware' => 'guest'], function () {
-        Route::get('/', function () {
-            return view('welcome');
-        });
+        Route::get('/', 'HomeController@welcome');
     });
 
     //Route for SSO
