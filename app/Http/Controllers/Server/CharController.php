@@ -153,8 +153,12 @@ class CharController extends Controller
         $builder = ServerCharacter::query()->select(['id', 'name', 'ckey'])->whereNotNull('name');
         return $datatables->eloquent($builder)
             ->removeColumn('id')
-            ->editColumn('name', '<a href="{{route(\'server.chars.show.get\',[\'char\'=>$id])}}">{{$name}}</a>')
-            ->addColumn('action', '<p><a href="{{route(\'server.chars.show.get\',[\'char\'=>$id])}}" class="btn btn-success" role="button">Show</a></p>')
+            ->editColumn('name', function( ServerCharacter $char) {
+                return '<a href="'.route('server.chars.show.get',['char_id'=>$char->id]).'">{{'.$char->name.'}}</a></p>';
+            })
+            ->addColumn('action', function( ServerCharacter $char) {
+                return '<p><a href="'.route('server.chars.show.get',['char_id'=>$char->id]).'" class="btn btn-success" role="button">Show</a></p>';
+            })
             ->rawColumns(['name', 'action'])
             ->make();
     }
@@ -165,8 +169,12 @@ class CharController extends Controller
 
         return Datatables::of($chars)
             ->removeColumn('id')
-            ->editColumn('name', '<a href="{{route(\'server.chars.show.get\',[\'char\'=>$id])}}">{{$name}}</a>')
-            ->addColumn('action', '<p><a href="{{route(\'server.chars.show.get\',[\'char\'=>$id])}}" class="btn btn-success" role="button">Show</a></p>')
+            ->editColumn('name', function( ServerCharacter $char) {
+                return '<a href="'.route('server.chars.show.get',['char_id'=>$char->id]).'">{{'.$char->name.'}}</a></p>';
+            })
+            ->addColumn('action', function( ServerCharacter $char) {
+                return '<p><a href="'.route('server.chars.show.get',['char_id'=>$char->id]).'" class="btn btn-success" role="button">Show</a></p>';
+            })
             ->rawColumns(['name', 'action'])
             ->make();
     }
@@ -182,8 +190,12 @@ class CharController extends Controller
 
         return Datatables::of($chars)
             ->removeColumn('id')
-            ->editColumn('name', '<a href="{{route(\'server.chars.show.get\',[\'char\'=>$id])}}">{{$name}}</a>')
-            ->addColumn('action', '<p><a href="{{route(\'server.chars.show.get\',[\'char\'=>$id])}}" class="btn btn-success" role="button">Show</a></p>')
+            ->editColumn('name', function( ServerCharacter $char) {
+                return '<a href="'.route('server.chars.show.get',['char_id'=>$char->id]).'">'.$char->name.'</a></p>';
+            })
+            ->addColumn('action', function( ServerCharacter $char) {
+                return '<p><a href="'.route('server.chars.show.get',['char_id'=>$char->id]).'" class="btn btn-success" role="button">Show</a></p>';
+            })
             ->rawColumns(['name', 'action'])
             ->make();
     }
