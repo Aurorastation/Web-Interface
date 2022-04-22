@@ -58,7 +58,7 @@
                             <td><b>Owner ckey:</b></td>
 
                             <td>
-                                @can('server_players_show')<a href="{{route('server.players.ckey',["ckey"=>$char->ckey])}}">@endcan()
+                                @can('server_players_show')<a href="{{route('server.players.ckey',["player_ckey"=>$char->ckey])}}">@endcan()
                                     {{$char->ckey}}
                                 @can('server_players_show')</a>@endcan()
                             </td>
