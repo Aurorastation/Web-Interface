@@ -128,14 +128,23 @@ class FormController extends Controller
         return redirect()->route('admin.forms.index');
     }
 
-    public function getFormData()
+    public function getFormData(Request $request)
     {
         $forms = ServerForm::select(['form_id', 'id', 'name', 'department']);
 
         return Datatables::of($forms)
             ->removeColumn('form_id')
-            ->editColumn('name', '<a href="{{route(\'admin.forms.edit.get\',[\'form\'=>$form_id])}}">{{$name}}</a>')
-            ->addColumn('action', '<p><a href="{{route(\'admin.forms.edit.get\',[\'form\'=>$form_id])}}" class="btn btn-info" role="button">Show/Edit</a>  @can(\'server_forms_edit\')<a href="{{route(\'admin.forms.delete\',[\'form\'=>$form_id])}}" class="btn btn-danger" role="button">Delete</a>@endcan()</p>')
+            ->editColumn('name', function( ServerForm $form) {
+                return '<a href="'.route('admin.forms.edit.get',['form_id'=>$form->form_id]).'">'.$form->name.'</a></p>';
+            })
+            ->addColumn('action', function( ServerForm $form) use ($request) {
+                $actionstring = '<div class="btn-group"><a href="'.route('admin.forms.edit.get',['form_id'=>$form->form_id]).'" class="btn btn-success" role="button">Show/Edit</a>';
+                if($request->user()->can('server_forms_edit')){
+                    $actionstring .= '<a href="'.route('admin.forms.delete',['form_id'=>$form->form_id]).'" class="btn btn-danger" role="button">Delete</a>';
+                }
+                $actionstring .= '</div>';
+                return $actionstring;
+            })
             ->rawColumns(['name', 'action'])
             ->make();
     }
