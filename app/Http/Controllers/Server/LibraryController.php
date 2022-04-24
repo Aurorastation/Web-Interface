@@ -134,14 +134,24 @@ class LibraryController extends Controller
         return redirect()->route('server.library.show.get',['book_id'=>$book->id]);
     }
 
-    public function getBookData()
+    public function getBookData(Request $request)
     {
         $books = ServerLibrary::select(['id','title','author','category']);
 
         return Datatables::of($books)
             ->removeColumn('id')
-            ->editColumn('title', '<a href="{{route(\'server.library.show.get\',[\'book\'=>$id])}}">{{$title}}</a>')
-            ->addColumn('action','<div class="btn-group"><a href="{{route(\'server.library.show.get\',[\'book\'=>$id])}}" class="btn btn-success" role="button">Show</a>  @can(\'server_library_edit\')<a href="{{route(\'server.library.edit.get\',[\'book\'=>$id])}}" class="btn btn-info" role="button">Edit</a><a href="{{route(\'server.library.delete\',[\'book\'=>$id])}}" class="btn btn-danger" role="button">Delete</a>@endcan()</div>')
+            ->editColumn('title', function( ServerLibrary $book) {
+                return '<a href="'.route('server.library.show.get',['book_id'=>$book->id]).'">'.$book->title.'</a></p>';
+            })
+            ->addColumn('action', function( ServerLibrary $book) use ($request) {
+                $actionstring = '<div class="btn-group"><a href="'.route('server.library.show.get',['book_id'=>$book->id]).'" class="btn btn-success" role="button">Show</a>';
+                if($request->user()->can('server_library_edit')){
+                    $actionstring .= '<a href="'.route('server.library.edit.get',['book_id'=>$book->id]).'" class="btn btn-info" role="button">Edit</a>';
+                    $actionstring .= '<a href="'.route('server.library.delete',['book_id'=>$book->id]).'" class="btn btn-danger" role="button">Delete</a>';
+                }
+                $actionstring .= '</div>';
+                return $actionstring;
+            })
             ->rawColumns(['title', 'action'])
             ->make();
     }

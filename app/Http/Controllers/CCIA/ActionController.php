@@ -190,8 +190,18 @@ class ActionController extends Controller
         $data = CCIAAction::select(['id', 'title'])->where('expires_at', NULL)->orWhere('expires_at', '>=', date("Y-m-d"));
 
         return Datatables::of($data)
-            ->editColumn('title', '<a href="{{ route(\'ccia.actions.show.get\', [\'id\' => $id]) }}">{{$title}}</a>')
-            ->addColumn('action', '<div class="btn-group" role="group"><a href="{{ route(\'ccia.actions.show.get\', [\'id\' => $id]) }}" class="btn btn-success" role="button">Show</a>  @can(\'ccia_action_edit\')<a href="{{route(\'ccia.actions.edit.get\', [\'id\' => $id]) }}" class="btn btn-info" role="button">Edit</a><a href="{{route(\'ccia.actions.delete\', [\'id\' => $id]) }}" class="btn btn-danger" role="button">Delete</a>@endcan()</div>')
+            ->editColumn('title', function( CCIAAction $CCIAAction) {
+                return '<a href="'.route('ccia.actions.show.get',['action_id'=>$CCIAAction->id]).'">'.$CCIAAction->title.'</a></p>';
+            })
+            ->addColumn('action', function( CCIAAction $CCIAAction) use ($request) {
+                $actionstring = '<div class="btn-group"><a href="'.route('ccia.actions.show.get',['action_id'=>$CCIAAction->id]).'" class="btn btn-success" role="button">Show</a>';
+                if($request->user()->can('ccia_action_edit')){
+                    $actionstring .= '<a href="'.route('ccia.actions.edit.get',['action_id'=>$CCIAAction->id]).'" class="btn btn-info" role="button">Edit</a>';
+                    $actionstring .= '<a href="'.route('ccia.actions.delete',['action_id'=>$CCIAAction->id]).'" class="btn btn-danger" role="button">Delete</a>';
+                }
+                $actionstring .= '</div>';
+                return $actionstring;
+            })
             ->rawColumns(['title', 'action'])
             ->make();
     }
@@ -204,8 +214,18 @@ class ActionController extends Controller
         $data = CCIAAction::select(['id', 'title', 'expires_at']);
 
         return Datatables::of($data)
-            ->editColumn('title', '<a href="{{ route(\'ccia.actions.show.get\', [\'id\' => $id]) }}">{{$title}}</a>')
-            ->addColumn('action', '<div class="btn-group" role="group"><a href="{{ route(\'ccia.actions.show.get\', [\'id\' => $id]) }}" class="btn btn-success" type="button">Show</a>  @can(\'ccia_action_edit\')<a href="{{route(\'ccia.actions.edit.get\', [\'id\' => $id]) }}" class="btn btn-info" role="button">Edit</a><a href="{{route(\'ccia.actions.delete\', [\'id\' => $id]) }}" class="btn btn-danger" role="button">Delete</a>@endcan()</div>')
+            ->editColumn('title', function( CCIAAction $CCIAAction) {
+                return '<a href="'.route('ccia.actions.show.get',['action_id'=>$CCIAAction->id]).'">'.$CCIAAction->title.'</a></p>';
+            })
+            ->addColumn('action', function( CCIAAction $CCIAAction) use ($request) {
+                $actionstring = '<div class="btn-group"><a href="'.route('ccia.actions.show.get',['action_id'=>$CCIAAction->id]).'" class="btn btn-success" role="button">Show</a>';
+                if($request->user()->can('ccia_action_edit')){
+                    $actionstring .= '<a href="'.route('ccia.actions.edit.get',['action_id'=>$CCIAAction->id]).'" class="btn btn-info" role="button">Edit</a>';
+                    $actionstring .= '<a href="'.route('ccia.actions.delete',['action_id'=>$CCIAAction->id]).'" class="btn btn-danger" role="button">Delete</a>';
+                }
+                $actionstring .= '</div>';
+                return $actionstring;
+            })
             ->rawColumns(['title', 'action'])
             ->make();
     }

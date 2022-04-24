@@ -51,8 +51,8 @@
                 </div>
                 @if($canedit)
                 <div class="panel-footer">
-                    <a href="{{route('server.library.edit.get',['book'=>$book->id])}}" class="btn btn-info" role="button">Edit</a>
-                    @can("server_library_edit")<a href="{{route('server.library.delete',['book'=>$book->id])}}" class="btn btn-danger" role="button">Delete</a>@endcan()
+                    <a href="{{route('server.library.edit.get',['book_id'=>$book->id])}}" class="btn btn-info" role="button">Edit</a>
+                    @can("server_library_edit")<a href="{{route('server.library.delete',['book_id'=>$book->id])}}" class="btn btn-danger" role="button">Delete</a>@endcan()
                     Author Ckey: {{$book->uploader}}
                 </div>
                 @endif()

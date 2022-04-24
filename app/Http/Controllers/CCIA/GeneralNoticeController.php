@@ -135,8 +135,18 @@
             }
             
             return Datatables::of($data)
-                ->editColumn('title', '<a href="{{ route(\'ccia.generalnotice.edit.get\', [\'id\' => $id]) }}">{{$title}}</a>')
-                ->addColumn('action', '<div class="btn-group"><a href="{{route(\'ccia.generalnotice.show.get\',[\'id\'=>$id])}}" class="btn btn-success" role="button">Show</a>  @can(\'ccia_general_notice_edit\')<a href="{{route(\'ccia.generalnotice.edit.get\',[\'id\'=>$id])}}" class="btn btn-info" role="button">Edit</a><a href="{{route(\'ccia.generalnotice.delete\',[\'id\'=>$id])}}" class="btn btn-danger" role="button">Delete</a>@endcan()</div>')
+                ->editColumn('title', function( CCIAGeneralNotice $CCIAGeneralNotice) {
+                    return '<a href="'.route('ccia.generalnotice.show.get',['generalnotice_id'=>$CCIAGeneralNotice->id]).'">'.$CCIAGeneralNotice->title.'</a></p>';
+                })
+                ->addColumn('action', function( CCIAGeneralNotice $CCIAGeneralNotice) use ($request) {
+                    $actionstring = '<div class="btn-group"><a href="'.route('ccia.generalnotice.show.get',['generalnotice_id'=>$CCIAGeneralNotice->id]).'" class="btn btn-success" role="button">Show</a>';
+                    if($request->user()->can('ccia_general_notice_edit')){
+                        $actionstring .= '<a href="'.route('ccia.generalnotice.edit.get',['generalnotice_id'=>$CCIAGeneralNotice->id]).'" class="btn btn-info" role="button">Edit</a>';
+                        $actionstring .= '<a href="'.route('ccia.generalnotice.delete',['generalnotice_id'=>$CCIAGeneralNotice->id]).'" class="btn btn-danger" role="button">Delete</a>';
+                    }
+                    $actionstring .= '</div>';
+                    return $actionstring;
+                })
                 ->rawColumns(['title', 'action'])
                 ->make();
             

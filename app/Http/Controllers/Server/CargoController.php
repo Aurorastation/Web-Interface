@@ -35,8 +35,12 @@ class CargoController extends Controller
 
         return Datatables::of($chars)
             ->removeColumn('id')
-            ->editColumn('name', '<a href="{{route(\'server.cargo.item.show\',[\'item\'=>$id])}}">{{$name}}</a>')
-            ->addColumn('action', '<p><a href="{{route(\'server.cargo.item.show\',[\'item\'=>$id])}}" class="btn btn-success" role="button">Show</a></p>')
+            ->editColumn('name', function( ServerCargoItem $item) {
+                return '<a href="'.route('server.cargo.item.show',['item_id'=>$item->id]).'">'.$item->name.'</a>';
+            })
+            ->addColumn('action', function( ServerCargoItem $item) use ($request) {
+                return '<a href="'.route('server.cargo.item.show',['item_id'=>$item->id]).'" class="btn btn-success" role="button">Show</a>';
+            })
             ->rawColumns(['name', 'action'])
             ->make();
     }
