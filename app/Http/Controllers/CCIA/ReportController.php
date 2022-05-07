@@ -150,11 +150,11 @@ class ReportController extends Controller
         $data = CCIAReport::select(['id', 'report_date', 'title', 'status']);
 
         return Datatables::of($data)
-            ->editColumn('title', function( CCIAReport $report) {
+            ->editColumn('title', function(CCIAReport $report) {
                 return '<a href="'.route('ccia.actions.show.get',['report_id'=>$report->id]).'">'.$report->title.'</a></p>';
             })
-            ->addColumn('action', function( CCIAReport $report) use ($request) {
-                $actionstring = '<div class="btn-group"><a href="'.route('ccia.report.show.get',['action_id'=>$report->id]).'" class="btn btn-success" role="button">Show</a>';
+            ->addColumn('action', function(CCIAReport $report) use ($request) {
+                $actionstring = '<div class="btn-group"><a href="'.route('ccia.report.show.get',['report_id'=>$report->id]).'" class="btn btn-success" role="button">Show</a>';
                 if($request->user()->can('ccia_report_edit')){
                     $actionstring .= '<a href="'.route('ccia.report.show.edit.get',['report_id'=>$report->id]).'" class="btn btn-info" role="button">Edit</a>';
                     $actionstring .= '<a href="'.route('ccia.report.show.delete',['report_id'=>$report->id]).'" class="btn btn-danger" role="button">Delete</a>';
