@@ -156,7 +156,7 @@ class ReportController extends Controller
             ->addColumn('action', function(CCIAReport $report) use ($request) {
                 $actionstring = '<div class="btn-group"><a href="'.route('ccia.report.show.get',['report_id'=>$report->id]).'" class="btn btn-success" role="button">Show</a>';
                 if($request->user()->can('ccia_report_edit')){
-                    $actionstring .= '<a href="'.route('ccia.report.show.edit.get',['report_id'=>$report->id]).'" class="btn btn-info" role="button">Edit</a>';
+                    $actionstring .= '<a href="'.route('ccia.report.edit.get',['report_id'=>$report->id]).'" class="btn btn-info" role="button">Edit</a>';
                     $actionstring .= '<a href="'.route('ccia.report.show.delete',['report_id'=>$report->id]).'" class="btn btn-danger" role="button">Delete</a>';
                 }
                 $actionstring .= '</div>';
