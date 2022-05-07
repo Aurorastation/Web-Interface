@@ -151,7 +151,7 @@ class ReportController extends Controller
 
         return Datatables::of($data)
             ->editColumn('title', function(CCIAReport $report) {
-                return '<a href="'.route('ccia.actions.show.get',['report_id'=>$report->id]).'">'.$report->title.'</a></p>';
+                return '<a href="'.route('ccia.report.show.get',['report_id'=>$report->id]).'">'.$report->title.'</a></p>';
             })
             ->addColumn('action', function(CCIAReport $report) use ($request) {
                 $actionstring = '<div class="btn-group"><a href="'.route('ccia.report.show.get',['report_id'=>$report->id]).'" class="btn btn-success" role="button">Show</a>';
