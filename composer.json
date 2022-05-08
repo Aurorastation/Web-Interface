@@ -16,6 +16,7 @@
         "laravel/tinker": "^2.7",
         "laravelcollective/html": "^6.3",
         "league/flysystem-aws-s3-v3": "^3.0",
+        "sentry/sentry-laravel": "^2.12",
         "socialiteproviders/manager": "^4.1",
         "yajra/laravel-datatables-html": "4.*",
         "yajra/laravel-datatables-oracle": "^9.0"
