@@ -31,7 +31,7 @@ new Vue({
         faxccia: false,
         faxcciareceivername: "",
         faxcciareceiverrank: "",
-        faxcciareceiverstation: "NSS Aurora",
+        faxcciareceiverstation: "SCCV Horizon",
         faxcciasendername: "",
         faxcciasenderrank: "",
         faxcciasenderstation: "NTCC Odin",
