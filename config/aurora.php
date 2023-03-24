@@ -104,14 +104,15 @@ return [
         4=>1,   //Forum: Forum Admins,              WI: administrators
         18=>1,  //Forum: Primary Administrators     WI: administrators
         8=>1,   //Forum: Secondary Administrators,  WI: administrators
-        6=>2,   //Forum: Moderators,        WI: moderators
-        13=>3,  //Forum: CCIA Agents,       WI: duty officers
-        16=>3,  //Forum: CCIA Leader,       WI: duty officers
-        11=>4,  //Forum: Whitelist Managers,WI: whitelist_managers
-        19=>5,  //Forum: Contract Managers, WI: contract_managers
-        10=>6,  //Forum: Lore Writers,      WI: lore_writers
-        17=>6,  //Forum: Lore Masters,      WI: lore_writers
-        9=>8,   //Forum: Developers,        WI: developers
+        6=>2,   //Forum: Moderators,                WI: moderators
+        13=>3,  //Forum: CCIA Agents,               WI: duty officers
+        16=>3,  //Forum: CCIA Leader,               WI: duty officers
+        11=>4,  //Forum: Lore Whitelist Managers,   WI: whitelist_managers
+        19=>5,  //Forum: Contract Managers,         WI: contract_managers
+        10=>6,  //Forum: Lore Writers,              WI: lore_writers
+        17=>6,  //Forum: Lore Masters,              WI: lore_writers
+        9=>8,   //Forum: Developers,                WI: developers
+		28=>4,  //Forum: AI Whitelist Managers,     WI: whitelist_managers
     ],
 
     /*
