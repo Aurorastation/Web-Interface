@@ -142,8 +142,8 @@
                         <td>{{$char->religion}}</td>
                     </tr>
                     <tr>
-                        <td><b>NT-Relation:</b></td>
-                        <td>{{$char->nt_relation}}</td>
+                        <td><b>Economic Status:</b></td>
+                        <td>{{$char->economic_status}}</td>
                     </tr>
                     </tbody>
                 </table>
