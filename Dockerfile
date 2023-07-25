@@ -11,6 +11,9 @@ RUN docker-php-ext-install \
     tokenizer \
     xml
 
+# Increase nginx client max_body_size.
+RUN echo "client_max_body_size 100M;" > /opt/docker/etc/nginx/conf.d/11-client-body-size.conf
+
 # RUN docker-php-ext-install json
 
 # Copy Composer binary from the Composer official Docker image
