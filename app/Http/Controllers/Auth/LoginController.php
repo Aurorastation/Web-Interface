@@ -76,7 +76,7 @@ class LoginController extends Controller
 
             try {
                 $wi_roles_old = array_unique($user->roles()->get()->toArray());
-            } catch (\Exception $e){
+            } catch (\Exception $e) {
                 $wi_roles_old = "";
                 Log::debug("login.wi_roles_old.invalid_format", ['user_id' => $user->id, 'wi_roles_old' => $user->roles()->get()]);
             }
@@ -103,7 +103,7 @@ class LoginController extends Controller
         Auth::login($user, TRUE);
 
         // If user was trying to auth, then we send them to finish authing.
-        if($request->session()->has('server_client_token')) {
+        if ($request->session()->has('server_client_token')) {
             return redirect()->route('server.login.begin');
         }
         return redirect('home');

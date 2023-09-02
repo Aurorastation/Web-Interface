@@ -16,11 +16,11 @@ class ServerController extends Controller
     public function beginLogin(Request $request)
     {
         $client_token = 'Inv@lid';
-        if($request->has('token')) {
+        if ($request->has('token')) {
             Log::debug("server.login - Setting server_client_token token for Server-Auth from token");
             $client_token = $request->input('token');
             // Check if out token is MD5 hash, what it should be
-            if(!preg_match('/^[a-f0-9]{32}$/', $client_token)) {
+            if (!preg_match('/^[a-f0-9]{32}$/', $client_token)) {
                 abort(400, 'Invalid request.');
             }
             // Let's store our token for later use
@@ -39,36 +39,33 @@ class ServerController extends Controller
             return redirect('login');
         }
 
-        $query = New ServerQuery;
+        $query = new ServerQuery;
         try {
             Log::debug("server.login - Fetching Client IP from Game-Server");
-            $query->setUp(config('aurora.gameserver_address'),config('aurora.gameserver_port'),config('aurora.gameserver_auth'));
+            $query->setUp(config('aurora.gameserver_address'), config('aurora.gameserver_port'), config('aurora.gameserver_auth'));
             $query->runQuery([
                 'query' => 'get_auth_client_ip',
                 'clienttoken' => $client_token,
             ]);
         } catch (\Exception $e) {
-            Log::error("server.login - Error while fetching client IP from Game-Server: ".$e->getMessage());
+            Log::error("server.login - Error while fetching client IP from Game-Server: " . $e->getMessage());
             abort(500, "Error while authenticating with Game-Server");
         }
         if ($query->response->statuscode == '403') {
-            Log::error("server.login - External Auth is disabled. StatusCode: ".$query->response->statuscode);
+            Log::error("server.login - External Auth is disabled. StatusCode: " . $query->response->statuscode);
             abort(403, "External Authentication is disabled at the moment.");
-        }
-        else if ($query->response->statuscode == '404') {
-            Log::error("server.login - Unauthed Client with auth token not found. StatusCode: ".$query->response->statuscode);
+        } else if ($query->response->statuscode == '404') {
+            Log::error("server.login - Unauthed Client with auth token not found. StatusCode: " . $query->response->statuscode);
             abort(404, "Unauthenticated Client could not be found - You might be logged in already");
-        }
-        else if ($query->response->statuscode == '500') {
-            Log::error("server.login - Error while fetching client with specified auth token. StatusCode: ".$query->response->statuscode);
+        } else if ($query->response->statuscode == '500') {
+            Log::error("server.login - Error while fetching client with specified auth token. StatusCode: " . $query->response->statuscode);
             abort("A server-error occurred during the authentication.");
-        }
-        else if ($query->response->statuscode != '200') {
-            Log::error("server.login - Undetermined gameserver error while trying to authenticate client. StatusCode: ".$query->response->statuscode);
+        } else if ($query->response->statuscode != '200') {
+            Log::error("server.login - Undetermined gameserver error while trying to authenticate client. StatusCode: " . $query->response->statuscode);
             abort($query->response->statuscode, "A error occured while trying to authenticate the client.");
         }
 
-        if($request->getClientIp() !== $query->response->data) {
+        if ($request->getClientIp() !== $query->response->data) {
             Log::debug("server.login - Player IP on Server does not match Request IP - Warning User");
             return redirect()->route('server.login.warn');
         }
@@ -84,36 +81,36 @@ class ServerController extends Controller
 
     public function endLogin(Request $request)
     {
-        if(!$request->session()->has('server_client_token') || !Auth::check()) {
+        if (!$request->session()->has('server_client_token') || !Auth::check()) {
             Log::debug("server.login - Auth request does not have a server_client_token or User is not logged in - Aborting");
             abort(500, 'Invalid state');
         }
 
         $client_token = $request->session()->pull('server_client_token');
-        
-        if($request->user()->byond_key == null) {
+
+        if ($request->user()->byond_key == null) {
             Log::debug("server.login - Unable to Auth - User has no ckey linked");
             return view('auth.server.nokey');
         }
-        $query = New ServerQuery;
+        $query = new ServerQuery;
         try {
-            Log::debug("server.login - Sending auth_client request to server for ckey: ".$request->user()->byond_key);
-            $query->setUp(config('aurora.gameserver_address'),config('aurora.gameserver_port'),config('aurora.gameserver_auth'));
+            Log::debug("server.login - Sending auth_client request to server for ckey: " . $request->user()->byond_key);
+            $query->setUp(config('aurora.gameserver_address'), config('aurora.gameserver_port'), config('aurora.gameserver_auth'));
             $query->runQuery([
                 'query' => 'auth_client',
                 'clienttoken' => $client_token,
                 'key' => $request->user()->byond_key
             ]);
         } catch (\Exception $e) {
-            Log::debug("server.login - Error while sending auth_client request to server: ".$e->getMessage());
+            Log::debug("server.login - Error while sending auth_client request to server: " . $e->getMessage());
             abort(500, $e->getMessage());
         }
 
         if ($query->response->statuscode == '200') {
-            Log::debug("server.login - Ckey Succesfully logged in: ".$request->user()->byond_key);
+            Log::debug("server.login - Ckey Succesfully logged in: " . $request->user()->byond_key);
             return view('auth.server.success');
         } else {
-            Log::debug("server.login - Invalid status-code while sending auth_client request to server: ".$query->response->statuscode);
+            Log::debug("server.login - Invalid status-code while sending auth_client request to server: " . $query->response->statuscode);
             abort(500);
         }
     }

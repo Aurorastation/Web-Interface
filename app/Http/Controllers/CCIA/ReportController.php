@@ -26,7 +26,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Yajra\DataTables\Datatables;
-Use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Log;
 
 use App\Models\CCIAReport;
 use App\Models\CCIAReportTranscript;
@@ -56,8 +56,10 @@ class ReportController extends Controller
         $transcripts = $report->transcripts()
             ->select(['id', 'character_id', 'interviewer', 'antag_involvement'])
             ->with(
-            array(
-                'character' => function ($query) { $query->select('id', 'name');})
+                array(
+                    'character' => function ($query) {
+                        $query->select('id', 'name');
+                    })
             )->get();
         return view('ccia.report.show', ['report' => $report, 'transcripts' => $transcripts]);
     }
@@ -150,14 +152,14 @@ class ReportController extends Controller
         $data = CCIAReport::select(['id', 'report_date', 'title', 'status']);
 
         return Datatables::of($data)
-            ->editColumn('title', function(CCIAReport $report) {
-                return '<a href="'.route('ccia.report.show.get',['report_id'=>$report->id]).'">'.$report->title.'</a></p>';
+            ->editColumn('title', function (CCIAReport $report) {
+                return '<a href="' . route('ccia.report.show.get', ['report_id' => $report->id]) . '">' . $report->title . '</a></p>';
             })
-            ->addColumn('action', function(CCIAReport $report) use ($request) {
-                $actionstring = '<div class="btn-group"><a href="'.route('ccia.report.show.get',['report_id'=>$report->id]).'" class="btn btn-success" role="button">Show</a>';
-                if($request->user()->can('ccia_report_edit')){
-                    $actionstring .= '<a href="'.route('ccia.report.edit.get',['report_id'=>$report->id]).'" class="btn btn-info" role="button">Edit</a>';
-                    $actionstring .= '<a href="'.route('ccia.report.delete',['report_id'=>$report->id]).'" class="btn btn-danger" role="button">Delete</a>';
+            ->addColumn('action', function (CCIAReport $report) use ($request) {
+                $actionstring = '<div class="btn-group"><a href="' . route('ccia.report.show.get', ['report_id' => $report->id]) . '" class="btn btn-success" role="button">Show</a>';
+                if ($request->user()->can('ccia_report_edit')) {
+                    $actionstring .= '<a href="' . route('ccia.report.edit.get', ['report_id' => $report->id]) . '" class="btn btn-info" role="button">Edit</a>';
+                    $actionstring .= '<a href="' . route('ccia.report.delete', ['report_id' => $report->id]) . '" class="btn btn-danger" role="button">Delete</a>';
                 }
                 $actionstring .= '</div>';
                 return $actionstring;
@@ -166,12 +168,14 @@ class ReportController extends Controller
             ->make();
     }
 
-    public function getTranscript(Request $request, $transcript_id){
+    public function getTranscript(Request $request, $transcript_id)
+    {
         $transcript = CCIAReportTranscript::findOrFail($transcript_id);
         return $transcript->text;
     }
 
-    public function getAntagClaim(Request $request, $transcript_id){
+    public function getAntagClaim(Request $request, $transcript_id)
+    {
         $transcript = CCIAReportTranscript::findOrFail($transcript_id);
         return $transcript->antag_involvement_text;
     }
