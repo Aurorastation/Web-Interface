@@ -21,18 +21,18 @@
 namespace App\Http\Controllers\Site;
 
 use Illuminate\Http\Request;
-Use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Log;
 
 use App\Http\Controllers\Controller;
 use App\Models\SitePermission;
 use App\Models\SiteRole;
-Use App\Models\User;
+use App\Models\User;
 
 class RoleController extends Controller
 {
     public function __construct()
     {
-        $this->middleware(function($request, $next){
+        $this->middleware(function ($request, $next) {
             if ($request->user()->cannot('site_roles_show')) {
                 abort('403', 'You do not have the required permission');
             }
@@ -70,7 +70,7 @@ class RoleController extends Controller
         $role = new SiteRole($request->all());
         $role->save();
 
-        Log::notice('perm.site_role.add - Site Role has been added',['user_id' => $request->user()->user_id, 'role_id' => $role->id, 'role_name' => $role->name]);
+        Log::notice('perm.site_role.add - Site Role has been added', ['user_id' => $request->user()->user_id, 'role_id' => $role->id, 'role_name' => $role->name]);
 
         return redirect()->route('site.roles.index');
     }
@@ -79,14 +79,14 @@ class RoleController extends Controller
     {
         $role = SiteRole::findOrfail($role_id);
 
-        $all_permissions = SitePermission::pluck('name','id');
-        $assigned_permissions = $role->permissions()->pluck('name','id');
+        $all_permissions = SitePermission::pluck('name', 'id');
+        $assigned_permissions = $role->permissions()->pluck('name', 'id');
 
-        $avail_permissions = array_diff($all_permissions->toArray(),$assigned_permissions->toArray());
+        $avail_permissions = array_diff($all_permissions->toArray(), $assigned_permissions->toArray());
 
         $assigned_users = $role->get_users(true);
 
-        return view('site.roles.edit', ['role' => $role,'avail_permissions'=>$avail_permissions,'assigned_users'=>$assigned_users]);
+        return view('site.roles.edit', ['role' => $role, 'avail_permissions' => $avail_permissions, 'assigned_users' => $assigned_users]);
     }
 
     public function postEdit(Request $request, $role_id)
@@ -106,7 +106,7 @@ class RoleController extends Controller
         $role->description = $request->input('description');
         $role->save();
 
-        Log::notice('perm.site_role.edit - Site Role has been edited',['user_id' => $request->user()->user_id, 'role_id' => $role->id, 'role_name' => $role->name]);
+        Log::notice('perm.site_role.edit - Site Role has been edited', ['user_id' => $request->user()->user_id, 'role_id' => $role->id, 'role_name' => $role->name]);
 
         return redirect()->route('site.roles.index');
     }
@@ -119,7 +119,7 @@ class RoleController extends Controller
 
         $role = SiteRole::findOrFail($role_id);
 
-        Log::notice('perm.site_role.delete - Site Role has been deleted',['user_id' => $request->user()->user_id, 'role_id' => $role->id, 'role_name' => $role->name]);
+        Log::notice('perm.site_role.delete - Site Role has been deleted', ['user_id' => $request->user()->user_id, 'role_id' => $role->id, 'role_name' => $role->name]);
 
         $role->delete();
 
@@ -135,9 +135,9 @@ class RoleController extends Controller
         $permission = SitePermission::findOrFail($request->input('permission'));
         $role->permissions()->attach($permission);
 
-        Log::notice('perm.site_role.attach_permission - Site Role Permission attached',['user_id' => $request->user()->user_id, 'role_id' => $role->id, 'role_name' => $role->name, 'permission_id' => $permission->id, 'permission_name' => $permission->name]);
+        Log::notice('perm.site_role.attach_permission - Site Role Permission attached', ['user_id' => $request->user()->user_id, 'role_id' => $role->id, 'role_name' => $role->name, 'permission_id' => $permission->id, 'permission_name' => $permission->name]);
 
-        return redirect()->route('site.roles.edit.get',['role_id' => $role_id]);
+        return redirect()->route('site.roles.edit.get', ['role_id' => $role_id]);
     }
 
     public function removePermission(Request $request, $role_id)
@@ -149,10 +149,10 @@ class RoleController extends Controller
         $permission = SitePermission::findOrFail($request->input('permission'));
         $role->permissions()->detach($permission);
 
-        Log::notice('perm.site_role.detach_permission - Site Role Permission detached',['user_id' => $request->user()->user_id, 'role_id' => $role->id, 'role_name' => $role->name, 'permission_id' => $permission->id, 'permission_name' => $permission->name]);
+        Log::notice('perm.site_role.detach_permission - Site Role Permission detached', ['user_id' => $request->user()->user_id, 'role_id' => $role->id, 'role_name' => $role->name, 'permission_id' => $permission->id, 'permission_name' => $permission->name]);
 
 
-        return redirect()->route('site.roles.edit.get',['role_id' => $role_id]);
+        return redirect()->route('site.roles.edit.get', ['role_id' => $role_id]);
     }
 
     public function addUser(Request $request, $role_id)
@@ -162,16 +162,16 @@ class RoleController extends Controller
         }
         $role = SiteRole::findOrFail($role_id);
 
-        if(is_numeric($request->input('user_id')))
+        if (is_numeric($request->input('user_id')))
             $user = User::findOrFail($request->input('user_id'));
         else
-            $user = User::where('name',$request->input('user_id'))->first();
+            $user = User::where('name', $request->input('user_id'))->first();
 
         $user->roles()->attach($role);
 
-        Log::notice('perm.site_role.add_user - Site Role User added',['user_id' => $request->user()->user_id, 'role_id' => $role->id, 'role_name' => $role->name, 'target_user_id' => $user->user_id, 'target_user_name' => $user->name]);
+        Log::notice('perm.site_role.add_user - Site Role User added', ['user_id' => $request->user()->user_id, 'role_id' => $role->id, 'role_name' => $role->name, 'target_user_id' => $user->user_id, 'target_user_name' => $user->name]);
 
-        return redirect()->route('site.roles.edit.get',['role_id' => $role_id]);
+        return redirect()->route('site.roles.edit.get', ['role_id' => $role_id]);
     }
 
     public function removeUser(Request $request, $role_id)
@@ -184,8 +184,8 @@ class RoleController extends Controller
 
         $user->roles()->detach($role);
 
-        Log::notice('perm.site_role.remove_user - Site Role User removed',['user_id' => $request->user()->user_id, 'role_id' => $role->id, 'role_name' => $role->name, 'target_user_id' => $user->user_id, 'target_user_name' => $user->name]);
+        Log::notice('perm.site_role.remove_user - Site Role User removed', ['user_id' => $request->user()->user_id, 'role_id' => $role->id, 'role_name' => $role->name, 'target_user_id' => $user->user_id, 'target_user_name' => $user->name]);
 
-        return redirect()->route('site.roles.edit.get',['role_id' => $role_id]);
+        return redirect()->route('site.roles.edit.get', ['role_id' => $role_id]);
     }
 }

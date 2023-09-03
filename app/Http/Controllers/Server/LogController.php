@@ -13,12 +13,13 @@ use DataTables;
 class LogController extends Controller
 {
 
-    public function index(Request $request){
+    public function index(Request $request)
+    {
         if ($request->user()->cannot('server_logs_show'))
             abort('403', 'You do not have the required permission.');
 
         $logs = ServerLog::all();
-        return view('server.log.index',["logs"=>$logs]);
+        return view('server.log.index', ["logs" => $logs]);
     }
 
     public function getLogData(Request $request)
@@ -35,13 +36,14 @@ class LogController extends Controller
             ->make();
     }
 
-    public function getShow(Request $request, $log_id){
+    public function getShow(Request $request, $log_id)
+    {
         if ($request->user()->cannot('server_logs_show'))
             abort('403', 'You do not have the required permission.');
 
         $logfile = ServerLog::findOrFail($log_id);
 
-        if(Storage::disk('server_logs')->missing($logfile->filename)){
+        if (Storage::disk('server_logs')->missing($logfile->filename)) {
             Log::error('server.log.download - Log Download Error - File missing on Storage', ['user_id' => $request->user()->user_id, 'log_id' => $logfile->id, 'filename' => $logfile->filename]);
             return abort(404, "Log file missing - Contact Host");
         }
@@ -51,16 +53,17 @@ class LogController extends Controller
         return Storage::disk('server_logs')->download($logfile->filename);
     }
 
-    public function getLogByGameId(Request $request, $game_id){
+    public function getLogByGameId(Request $request, $game_id)
+    {
         if ($request->user()->cannot('server_logs_show'))
             abort('403', 'You do not have the required permission.');
 
-        $logfile = ServerLog::where('gameid',$game_id)->first();
-        if(!isset($logfile)){
-            abort('404','There is no log file for the requested game id.');
+        $logfile = ServerLog::where('gameid', $game_id)->first();
+        if (!isset($logfile)) {
+            abort('404', 'There is no log file for the requested game id.');
         }
 
-        if(Storage::disk('server_logs')->missing($logfile->filename)){
+        if (Storage::disk('server_logs')->missing($logfile->filename)) {
             Log::error('server.log.download - Log Download Error - File missing on Storage', ['user_id' => $request->user()->user_id, 'log_id' => $logfile->id, 'filename' => $logfile->filename]);
             abort(404, "Log file missing - Contact Host");
         }
@@ -70,25 +73,26 @@ class LogController extends Controller
         return Storage::disk('server_logs')->download($logfile->filename);
     }
 
-    public function upload(Request $request){
-        $validator = Validator::make($request->all(),[
-            'logfile' => ['required','file'],
-            'date' => ['required','date'],
-            'gameid' => ['required','string','size:8'],
+    public function upload(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'logfile' => ['required', 'file'],
+            'date' => ['required', 'date'],
+            'gameid' => ['required', 'string', 'size:8'],
             'key' => [
                 'required',
                 function ($attribute, $value, $fail) {
-                if ($value !== config('aurora.gameserver_logkey')) {
-                    $fail($attribute.' is invalid.');
-                }
-            },]
+                    if ($value !== config('aurora.gameserver_logkey')) {
+                        $fail($attribute . ' is invalid.');
+                    }
+                },]
         ]);
 
-        if($validator->fails()){
-            return response([$validator->messages()],400);
+        if ($validator->fails()) {
+            return response([$validator->messages()], 400);
         }
 
-        $path = $request->logfile->store('server_logs','server_logs');
+        $path = $request->logfile->store('server_logs', 'server_logs');
 
         $logdata = new ServerLog();
         $logdata->filename = $path;
@@ -96,8 +100,43 @@ class LogController extends Controller
         $logdata->logdate = $request->input('date');
         $logdata->save();
 
-        Log::notice("server.logfile.upload - New Log Uploaded",["logdata"=>$logdata]);
+        Log::notice("server.logfile.upload - New Log Uploaded", ["logdata" => $logdata]);
 
-        return response(null,200);
+        return response(null, 200);
+    }
+
+    public function register(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'filepath' => [
+                'required',
+                function ($attribute, $value, $fail) {
+                    if (!Storage::disk('server_logs')->exists($value)) {
+                        $fail($attribute.' does not exist.');
+                    }
+                }
+            ],
+            'date' => ['required', 'date'],
+            'gameid' => ['required', 'string', 'size:8'],
+            'key' => [
+                'required',
+                function ($attribute, $value, $fail) {
+                    if ($value !== config('aurora.gameserver_logkey')) {
+                        $fail($attribute . ' is invalid.');
+                    }
+                },
+            ]
+        ]);
+
+        if ($validator->fails()) {
+            return response([$validator->messages()], 400);
+        }
+
+        //save the entry
+        $logdata = new ServerLog();
+        $logdata->filename = $request->input("filepath");
+        $logdata->gameid = $request->input('gameid');
+        $logdata->logdate = $request->input('date');
+        $logdata->save();
     }
 }

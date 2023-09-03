@@ -95,17 +95,17 @@ Route::group(['middleware' => 'web'], function () {
             Route::post('/add', ['as' => 'ccia.generalnotice.add.post', 'uses' => 'CCIA\GeneralNoticeController@postAdd']);
             Route::get('/data', ['as' => 'ccia.generalnotice.data', 'uses' => 'CCIA\GeneralNoticeController@getData']);
         });
-        Route::group(['prefix' => 'report'], function() {
-            Route::get('', ['as'=>'ccia.report.index', 'uses'=> 'CCIA\ReportController@index']);
-            Route::get('/{report_id}/show', ['as'=>'ccia.report.show.get', 'uses'=> 'CCIA\ReportController@getShow']);
-            Route::get('/{report_id}/edit', ['as'=>'ccia.report.edit.get', 'uses'=> 'CCIA\ReportController@getEdit']);
-            Route::post('/{report_id}/edit', ['as'=>'ccia.report.edit.post', 'uses'=> 'CCIA\ReportController@postEdit']);
+        Route::group(['prefix' => 'report'], function () {
+            Route::get('', ['as' => 'ccia.report.index', 'uses' => 'CCIA\ReportController@index']);
+            Route::get('/{report_id}/show', ['as' => 'ccia.report.show.get', 'uses' => 'CCIA\ReportController@getShow']);
+            Route::get('/{report_id}/edit', ['as' => 'ccia.report.edit.get', 'uses' => 'CCIA\ReportController@getEdit']);
+            Route::post('/{report_id}/edit', ['as' => 'ccia.report.edit.post', 'uses' => 'CCIA\ReportController@postEdit']);
             Route::get('/{report_id}/delete', ['as' => 'ccia.report.delete', 'uses' => 'CCIA\ReportController@delete']);
-            Route::get('/add', ['as'=>'ccia.report.add.get', 'uses'=> 'CCIA\ReportController@getAdd']);
-            Route::post('/add', ['as'=>'ccia.report.add.post', 'uses'=> 'CCIA\ReportController@postAdd']);
+            Route::get('/add', ['as' => 'ccia.report.add.get', 'uses' => 'CCIA\ReportController@getAdd']);
+            Route::post('/add', ['as' => 'ccia.report.add.post', 'uses' => 'CCIA\ReportController@postAdd']);
             Route::get('/data', ['as' => 'ccia.report.data', 'uses' => 'CCIA\ReportController@getData']);
-            Route::get('/transcript/{transcript_id}', ['as'=>'ccia.report.transcript.get', 'uses'=> 'CCIA\ReportController@getTranscript']);
-            Route::get('/claim/{transcript_id}', ['as'=>'ccia.report.claim.get', 'uses'=> 'CCIA\ReportController@getAntagClaim']);
+            Route::get('/transcript/{transcript_id}', ['as' => 'ccia.report.transcript.get', 'uses' => 'CCIA\ReportController@getTranscript']);
+            Route::get('/claim/{transcript_id}', ['as' => 'ccia.report.claim.get', 'uses' => 'CCIA\ReportController@getAntagClaim']);
         });
     });
 
@@ -227,11 +227,11 @@ Route::group(['middleware' => 'web'], function () {
             Route::get('/data', ['as' => 'server.news.data', 'uses' => 'Server\NewsController@getNewsData']);
         });
 
-        Route::group(['prefix' => 'log'],function(){
-            Route::get('',['as'=>'server.log.index', 'uses' => 'Server\LogController@index']);
+        Route::group(['prefix' => 'log'], function () {
+            Route::get('', ['as' => 'server.log.index', 'uses' => 'Server\LogController@index']);
             Route::get('/data', ['as' => 'server.log.data', 'uses' => 'Server\LogController@getLogData']);
-            Route::get('/game/{game_id}',['as'=>'server.log.show.getbygame', 'uses' => 'Server\LogController@getLogByGameId']);
-            Route::get('/{log_id}',['as'=>'server.log.show.get', 'uses' => 'Server\LogController@getShow']);
+            Route::get('/game/{game_id}', ['as' => 'server.log.show.getbygame', 'uses' => 'Server\LogController@getLogByGameId']);
+            Route::get('/{log_id}', ['as' => 'server.log.show.get', 'uses' => 'Server\LogController@getShow']);
 
         });
 

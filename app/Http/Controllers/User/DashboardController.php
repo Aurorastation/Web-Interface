@@ -37,15 +37,15 @@ class DashboardController extends Controller
             return redirect()->route('user.link');
         }
 
-        $player = ServerPlayer::where('ckey',$request->user()->byond_key)->first();
+        $player = ServerPlayer::where('ckey', $request->user()->byond_key)->first();
 
         //Get player warning data
         $playerwarning = new PlayerWarning($request->user()->byond_key);
 
-        return view('user.dashboard.index',array(
-            "whitelists"=> $player->get_player_whitelists(),
+        return view('user.dashboard.index', array(
+            "whitelists" => $player->get_player_whitelists(),
             "warnings" => $playerwarning,
             "chars" => $player->get_chars()
-            ));
+        ));
     }
 }
