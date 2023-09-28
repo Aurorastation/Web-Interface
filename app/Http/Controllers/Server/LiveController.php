@@ -107,7 +107,8 @@ class LiveController extends Controller
                 "title" => $request->input('faxtitle'),
                 "body" => nl2br($request->input('faxbody')),
                 "announce" => $request->input('faxannounce'),
-                "target" => $request->input('faxtargets')
+                "target" => $request->input('faxtargets'),
+                "stamptext" => $request->input('faxstamptext')
             ]);
         } catch (\Exception $e) {
             abort(500, $e->getMessage());

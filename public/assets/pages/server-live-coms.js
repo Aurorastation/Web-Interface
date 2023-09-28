@@ -24,6 +24,7 @@ new Vue({
         faxstatus: "Loading Faxmachines",
         faxtitle: "",
         faxbody: "",
+        faxstamptext: "by the Central Command Quantum Relay",
         faxannounce: true,
         faxtargets: "",
         faxmachines: ["Loading Faxmachines..."],
@@ -69,17 +70,18 @@ new Vue({
         },
 
         cciafaxready: function(){
-            return  this.faxtitle != "" &&
-                this.faxbody != "" &&
-                this.faxtargets != "" &&
-                this.faxcciareceivername != "" &&
-                this.faxcciareceiverrank != "" &&
-                this.faxcciareceiverstation != "" &&
-                this.faxcciasendername != "" &&
-                this.faxcciasenderrank != "" &&
-                this.faxcciasenderstation != "" &&
-                this.faxcciasignature != "" &&
-                this.faxcciaroundtime != ""
+            return  this.faxtitle !== "" &&
+                this.faxbody !== "" &&
+                this.faxstamptext !== "" &&
+                this.faxtargets !== "" &&
+                this.faxcciareceivername !== "" &&
+                this.faxcciareceiverrank !== "" &&
+                this.faxcciareceiverstation !== "" &&
+                this.faxcciasendername !== "" &&
+                this.faxcciasenderrank !== "" &&
+                this.faxcciasenderstation !== "" &&
+                this.faxcciasignature !== "" &&
+                this.faxcciaroundtime !== ""
         },
 
         faxcciabody: function(){
@@ -124,7 +126,8 @@ new Vue({
                     'faxtitle':this.faxtitle,
                     'faxbody':this.faxcciabody,
                     'faxtargets': this.faxtargets,
-                    'faxannounce': this.faxannounce
+                    'faxannounce': this.faxannounce,
+                    'faxstamptext': this.faxstamptext
                 }).then(
                     function(response){
                         this.$set('faxstatus','Fax has been sent');
@@ -143,7 +146,8 @@ new Vue({
                     'faxtitle':this.faxtitle,
                     'faxbody':this.faxbody,
                     'faxtargets': this.faxtargets,
-                    'faxannounce': this.faxannounce
+                    'faxannounce': this.faxannounce,
+                    'faxstamptext': this.faxstamptext
                 }).then(
                     function(response){
                         this.$set('faxstatus','Fax has been sent');

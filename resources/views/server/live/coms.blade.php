@@ -49,6 +49,11 @@
                                 </div>
 
                                 <div class="form-group">
+                                    <label for="faxStampText">Fax Stamp Text</label>
+                                    <input type="text" class="form-control" id="faxStampText" placeholder="by the Central Command Quantum Relay" v-model="faxstamptext">
+                                </div>
+
+                                <div class="form-group">
                                     <label for="faxAnnounce">Annonce Fax</label>
                                     <select class="form-control" v-model="faxannounce">
                                         <option disabled value="">Please select one</option>
@@ -138,6 +143,7 @@
                                     <ul>
                                         <li v-show="!faxtitle">You must enter a Title</li>
                                         <li v-show="!faxbody">You must enter a Message</li>
+                                        <li v-show="!faxstamptext">You must enter Stamp Text</li>
                                         <li v-show="!faxtargets.length">You must specify a Target</li>
                                         <li v-show="!faxcciareceivername">You must enter a Receiver Name</li>
                                         <li v-show="!faxcciareceiverrank">You must enter a Receiver Rank</li>
