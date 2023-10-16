@@ -123,8 +123,8 @@ new Vue({
             if(this.faxccia)
             {
                 this.$http.post('/server/live/sendfax', {
-                    'faxtitle':this.faxtitle,
-                    'faxbody':this.faxcciabody,
+                    'faxtitle': this.faxtitle,
+                    'faxbody': this.faxcciabody,
                     'faxtargets': this.faxtargets,
                     'faxannounce': this.faxannounce,
                     'faxstamptext': this.faxstamptext

@@ -38,6 +38,7 @@ class ServerLibrary extends Model
         $config = \HTMLPurifier_Config::createDefault();
         $config->set('HTML.Allowed','p, ul, ol, li, h1, h2, h3, h4, h5, h6, br, strong, em, b, i ,u');  //No a[href]
         $config->set('AutoFormat.RemoveEmpty', true);
+        $config->set('Cache.SerializerPath',sys_get_temp_dir());
         $this->purifier = new HTMLPurifier($config);
     }
 
