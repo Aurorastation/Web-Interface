@@ -242,7 +242,7 @@
 </body>
 <footer>
     <div class="footer navbar-fixed-bottom">
-        <small><p class="text-muted">Aurora Webinterface - Licensed under the AGPL - Version 0.40.6</p></small>
+        <small><p class="text-muted">Aurora Webinterface - Licensed under the AGPL - Version 0.41.0</p></small>
     </div>
 </footer>
 </html>
