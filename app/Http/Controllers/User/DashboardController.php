@@ -38,6 +38,7 @@ class DashboardController extends Controller
         }
 
         $player = ServerPlayer::where('ckey', $request->user()->byond_key)->first();
+        //ToDo: Handle situation with invalid ckey
 
         //Get player warning data
         $playerwarning = new PlayerWarning($request->user()->byond_key);

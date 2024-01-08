@@ -1,4 +1,4 @@
-FROM webdevops/php-nginx:8.0-alpine
+FROM webdevops/php-nginx:8.2-alpine
 
 # Install Laravel framework system requirements (https://laravel.com/docs/8.x/deployment#optimizing-configuration-loading)
 RUN apk add oniguruma-dev postgresql-dev libxml2-dev
@@ -8,7 +8,6 @@ RUN docker-php-ext-install \
     fileinfo \
     mbstring \
     pdo_mysql \
-    tokenizer \
     xml
 
 # Increase nginx client max_body_size and re-cache config on startup
