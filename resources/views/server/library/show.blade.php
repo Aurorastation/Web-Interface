@@ -1,4 +1,4 @@
-{{--Copyright (c) 2016 "Werner Maisl"--}}
+{{--Copyright (c) 2016 "Arrow768"--}}
 
 {{--This file is part of the Aurora Webinterface--}}
 

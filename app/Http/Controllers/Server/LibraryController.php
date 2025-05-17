@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (c) 2016-2017 "Werner Maisl"
+ * Copyright (c) 2016-2017 "Arrow768"
  *
  * This file is part of Aurorastation-Wi
  * Aurorastation-Wi is free software: you can redistribute it and/or modify
@@ -38,6 +38,10 @@ class LibraryController extends Controller
             if($request->user()->byond_linked == False)
             {
                 abort('403','Your byond account is not linked to your forum account.');
+            }
+            if($request->user()->is_perma_banned == False)
+            {
+                abort('403','Your byond account is not linked or has been banned from the server.');
             }
             return $next($request);
         });

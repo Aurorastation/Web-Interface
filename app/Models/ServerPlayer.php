@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (c) 2016 "Werner Maisl"
+ * Copyright (c) 2016 "Arrow768"
  *
  * This file is part of Aurorastation-Wi
  * Aurorastation-Wi is free software: you can redistribute it and/or modify
@@ -308,5 +308,17 @@ class ServerPlayer extends Model
             return $forum_user->name;
         else
             return false;
+    }
+
+    public function is_perma_banned()
+    {
+        $permabancount = \Illuminate\Support\Facades\DB::connection('server')
+            ->table('bans')
+            ->where('ckey', '=', $this->ckey)
+            ->where('bantype','=','PERMABAN')
+            ->whereNull('unbanned_datetime')
+            ->count();
+
+        return $permabancount > 0;
     }
 }

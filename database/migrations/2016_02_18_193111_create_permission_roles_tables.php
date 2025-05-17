@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Copyright (c) 2016 'Werner Maisl', 'Sierra Brown'
+ * Copyright (c) 2016 'Arrow768', 'Sierra Brown'
  *
  * This file is part of Aurorastation-Wi
  * Aurorastation-Wi is free software: you can redistribute it and/or modify
