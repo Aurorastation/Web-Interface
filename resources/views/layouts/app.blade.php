@@ -1,4 +1,4 @@
-{{--Copyright (c) 2016-2018 "Werner Maisl"--}}
+{{--Copyright (c) 2016-2018 "Arrow768" --}}
 
 {{--This file is part of the Aurora Webinterface--}}
 
@@ -242,7 +242,7 @@
 </body>
 <footer>
     <div class="footer navbar-fixed-bottom">
-        <small><p class="text-muted">Aurora Webinterface - Licensed under the AGPL - Version 0.41.0</p></small>
+        <small><p class="text-muted">Aurora Webinterface - Licensed under the AGPL - Version 0.42.0</p></small>
     </div>
 </footer>
 </html>

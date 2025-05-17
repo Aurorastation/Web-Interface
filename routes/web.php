@@ -11,7 +11,7 @@
 |
 */
 
-//Copyright (c) 2016-2018 "Werner Maisl", "Sierra Brown"
+//Copyright (c) 2016-2018 "Arrow768", "Sierra Brown"
 //
 //This file is part of the Aurora Webinterface
 //
