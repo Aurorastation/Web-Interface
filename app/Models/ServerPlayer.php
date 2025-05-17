@@ -309,4 +309,16 @@ class ServerPlayer extends Model
         else
             return false;
     }
+
+    public function is_perma_banned()
+    {
+        $permabancount = \Illuminate\Support\Facades\DB::connection('server')
+            ->table('bans')
+            ->where('ckey', '=', $this->ckey)
+            ->where('bantype','=','PERMABAN')
+            ->whereNull('unbanned_datetime')
+            ->count();
+
+        return $permabancount > 0;
+    }
 }

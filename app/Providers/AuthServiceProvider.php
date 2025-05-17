@@ -20,6 +20,7 @@
 
 namespace App\Providers;
 
+use App\Models\ServerPlayer;
 use Auth;
 use Illuminate\Support\Facades\Log;
 use App\Models\SitePermission;
@@ -60,6 +61,19 @@ class AuthServiceProvider extends ServiceProvider
 
         Gate::define('byond_linked', function ($user) {
             return $user->byond_linked;
+        });
+
+        Gate::define('is_perma_banned', function ($user) {
+            if (!$user->byond_linked) {
+                return TRUE;
+            }
+
+            $player = ServerPlayer::where('ckey', $user->byond_key)->first();
+            if(!$player){
+                return TRUE;
+            }
+
+            return $player->is_perma_banned();
         });
 
         foreach($this->getPermissions() as $permission)

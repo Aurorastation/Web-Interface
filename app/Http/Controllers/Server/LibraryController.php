@@ -39,6 +39,10 @@ class LibraryController extends Controller
             {
                 abort('403','Your byond account is not linked to your forum account.');
             }
+            if($request->user()->is_perma_banned == False)
+            {
+                abort('403','Your byond account is not linked or has been banned from the server.');
+            }
             return $next($request);
         });
     }
