@@ -118,11 +118,15 @@ class LinkController extends Controller
 
         $ckey = Helpers::sanitize_ckey($request->input("Byond_Username"));
 
-        #Check if a player with that ckey exists
-        $player_count = ServerPlayer::where('ckey', $ckey)->count();
+        $player = ServerPlayer::where('ckey', $ckey)->first();
 
-        if ($player_count != 1) {
+        #Check if a player with that ckey exists
+        if (is_null($player)) {
             return redirect()->route('user.link')->withErrors(array("Could not find player with the ckey" . $ckey . ". You need to join on the server before you can link your account."));
+        }
+
+        if ($player->ckey_is_external) {
+            return redirect()->route('user.link')->withErrors(array("Your ckey " . $ckey . " is an external ckey. Linking forum accounts to these keys is currently not supported."));
         }
 
         //Only add a new linking request if there is no existing one (where the deleted_at date is not set)
