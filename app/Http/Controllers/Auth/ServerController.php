@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 
 use App\Models\User;
 use App\Services\Server\ServerQuery;
+use App\Services\Server\Helpers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -89,6 +90,13 @@ class ServerController extends Controller
         $client_token = $request->session()->pull('server_client_token');
         $byond_key_is_linked = $request->user()->byond_key != null;
 
+        $ckey_is_external = False;
+        if ($byond_key_is_linked) {
+            $ckey_is_external = ServerPlayer::where('ckey', $request->user()->byond_key)->select('ckey_is_external')->firstOrFail();
+        } else {
+            $ckey_is_external = True;
+        }
+
         $query = new ServerQuery;
         try {
             Log::debug("server.login - Sending auth_client request to server for ckey and forum account: " . $request->user()->byond_key . ", " . $request->user()->name);
@@ -98,7 +106,7 @@ class ServerController extends Controller
                 'clienttoken' => $client_token,
                 'key' => $request->user()->byond_key,
                 'forumuser' => $request->user()->name,
-                'use-external-key' =>  $byond_key_is_linked
+                'use-external-key' => $ckey_is_external
             ]);
         } catch (\Exception $e) {
             Log::debug("server.login - Error while sending auth_client request to server: " . $e->getMessage());
@@ -107,6 +115,13 @@ class ServerController extends Controller
 
         if ($query->response->statuscode == '200') {
             Log::debug("server.login - Ckey or external user succesfully logged in: " . $request->user()->byond_key . ", " . $request->user()->name);
+
+            // User was authorized but no BYOND key is linked yet. Ergo, external ckey was used. Link it.
+            if ($byond_key_is_linked == False) {
+                $fake_ckey = "GuestF-" . Helpers::sanitize_ckey($request->user()->name);
+                $request->user()->linkWithCkey($fake_ckey);
+            }
+
             return view('auth.server.success');
         } else {
             Log::debug("server.login - Invalid status-code while sending auth_client request to server: " . $query->response->statuscode);

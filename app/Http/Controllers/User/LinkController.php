@@ -49,20 +49,8 @@ class LinkController extends Controller
             //Check if the linking request is set to something other than new
             if ($linking_request->status == "confirmed") {
                 //If its confirmed write it to the forum db
-                $sanitized_key = Helpers::sanitize_ckey($linking_request->player_ckey);
-                $request->user()->byond_key = $sanitized_key;
-                $request->user()->save();
 
-                //Update the forum
-                $base_url = config('aurora.forum_url');
-                if ($base_url) {
-                    $request_url = $base_url . 'api/core/members/' . $request->user()->id .
-                        '?key=' . config('aurora.forum_api_key') .
-                        '&customFields[' . config('aurora.forum_byond_attribute') . ']=' . $sanitized_key;
-                    $client = new \GuzzleHttp\Client();
-                    $client->request('POST', $request_url);
-                }
-
+                $request->user()->linkWithCkey($byond_key);
 
                 //Set the status of the linking request to linked and set the deleted_at date
                 DB::connection('server')->table('player_linking')
