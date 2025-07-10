@@ -8,6 +8,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use App\Models\ServerPlayer;
 use App\Models\SiteRole;
+use App\Services\Server\Helpers;
 
 class User extends Authenticatable
 {
@@ -147,6 +148,35 @@ class User extends Authenticatable
                 return FALSE;
         } else {
             return NULL;
+        }
+    }
+
+    /**
+     * Linked the user account to a specified ckey. Will also create the link in the forums.
+     * 
+     * Will throw if the user is already linked with a byond key.
+     * 
+     * @param $byond_key
+     */
+    public function linkWithCkey($byond_key)
+    {
+        if ($this->byond_linked == True) {
+            throw new \Exception("User already linked with a ckey.");
+        }
+
+        $sanitized_key = Helpers::sanitize_ckey($byond_key);
+        $this->byond_key = $sanitized_key;
+        $this->byond_linked = True;
+        $this->save();
+
+        //Update the forum
+        $base_url = config('aurora.forum_url');
+        if ($base_url) {
+            $request_url = $base_url . 'api/core/members/' . $this->id .
+                '?key=' . config('aurora.forum_api_key') .
+                '&customFields[' . config('aurora.forum_byond_attribute') . ']=' . $sanitized_key;
+            $client = new \GuzzleHttp\Client();
+            $client->request('POST', $request_url);
         }
     }
 }
