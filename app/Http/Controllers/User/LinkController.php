@@ -49,20 +49,8 @@ class LinkController extends Controller
             //Check if the linking request is set to something other than new
             if ($linking_request->status == "confirmed") {
                 //If its confirmed write it to the forum db
-                $sanitized_key = Helpers::sanitize_ckey($linking_request->player_ckey);
-                $request->user()->byond_key = $sanitized_key;
-                $request->user()->save();
 
-                //Update the forum
-                $base_url = config('aurora.forum_url');
-                if ($base_url) {
-                    $request_url = $base_url . 'api/core/members/' . $request->user()->id .
-                        '?key=' . config('aurora.forum_api_key') .
-                        '&customFields[' . config('aurora.forum_byond_attribute') . ']=' . $sanitized_key;
-                    $client = new \GuzzleHttp\Client();
-                    $client->request('POST', $request_url);
-                }
-
+                $request->user()->linkWithCkey($byond_key);
 
                 //Set the status of the linking request to linked and set the deleted_at date
                 DB::connection('server')->table('player_linking')
@@ -118,11 +106,15 @@ class LinkController extends Controller
 
         $ckey = Helpers::sanitize_ckey($request->input("Byond_Username"));
 
-        #Check if a player with that ckey exists
-        $player_count = ServerPlayer::where('ckey', $ckey)->count();
+        $player = ServerPlayer::where('ckey', $ckey)->first();
 
-        if ($player_count != 1) {
+        #Check if a player with that ckey exists
+        if (is_null($player)) {
             return redirect()->route('user.link')->withErrors(array("Could not find player with the ckey" . $ckey . ". You need to join on the server before you can link your account."));
+        }
+
+        if ($player->ckey_is_external) {
+            return redirect()->route('user.link')->withErrors(array("Your ckey " . $ckey . " is an external ckey. Linking forum accounts to these keys is currently not supported."));
         }
 
         //Only add a new linking request if there is no existing one (where the deleted_at date is not set)

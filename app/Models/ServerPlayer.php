@@ -28,7 +28,7 @@ class ServerPlayer extends Model
     public $timestamps = FALSE;
     protected $connection = 'server';
     protected $table = 'player';
-    protected $fillable = ['ckey', 'ip', 'whitelist_status'];
+    protected $fillable = ['ckey', 'ip', 'whitelist_status', 'ckey_is_external'];
     protected $primaryKey = 'id';
     protected $dates = ['firstseen', 'lastseen'];
 
