@@ -166,7 +166,6 @@ class User extends Authenticatable
 
         $sanitized_key = Helpers::sanitize_ckey($byond_key);
         $this->byond_key = $sanitized_key;
-        $this->byond_linked = True;
         $this->save();
 
         //Update the forum
