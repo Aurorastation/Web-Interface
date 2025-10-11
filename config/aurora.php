@@ -105,6 +105,7 @@ return [
         18=>1,  //Forum: Primary Administrators     WI: administrators
         8=>1,   //Forum: Secondary Administrators,  WI: administrators
         6=>2,   //Forum: Moderators,                WI: moderators
+        31=>10, //Forum: Senior Moderators,         WI: senior_moderators
         13=>3,  //Forum: CCIA Agents,               WI: duty officers
         16=>3,  //Forum: CCIA Leader,               WI: duty officers
         11=>4,  //Forum: Lore Whitelist Managers,   WI: whitelist_managers
