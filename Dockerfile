@@ -22,9 +22,8 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 ENV WEB_DOCUMENT_ROOT /app/public
 ENV APP_ENV production
 WORKDIR /app
-COPY --chown=application:application . .
+COPY --chown=application:application . /app
 
-USER application
 
 RUN composer install --no-interaction --optimize-autoloader --no-dev
 # Optimizing Configuration loading
@@ -34,4 +33,4 @@ RUN php artisan route:cache
 # Optimizing View loading
 RUN php artisan view:cache
 
-#RUN chown -R application:application .
+RUN chown -R application:application /app
