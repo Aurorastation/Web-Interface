@@ -35,11 +35,11 @@ class LibraryController extends Controller
     {
         $this->middleware(function($request, $next){
             //If the users byond account is not linked and he doesnt have permission to edit the library -> Abort
-            if($request->user()->byond_linked == False)
+            if(!$request->user()->byond_linked)
             {
                 abort('403','Your byond account is not linked to your forum account.');
             }
-            if($request->user()->is_perma_banned == False)
+            if($request->user()->is_perma_banned)
             {
                 abort('403','Your byond account is not linked or has been banned from the server.');
             }
