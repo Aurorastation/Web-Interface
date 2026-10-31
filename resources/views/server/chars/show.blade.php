@@ -497,6 +497,31 @@
             </div>
         </div>
     </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">Record Comment Overview</div>
+
+                <div class="panel-body">
+                    <table id="record-comments-table" class="table table-condensed">
+                        <thead>
+                        <tr>
+                            <th width="20px">ID</th>
+                            <th width="80px">Record Type</th>
+                            <th width="120px">Author</th>
+                            <th>Comment</th>
+                            <th width="80px">Game ID</th>
+                            <th width="140px">Created At</th>
+                            <th width="140px">Updated At</th>
+                            <th width="60px">Status</th>
+                            <th width="60px">Actions</th>
+                        </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
     @can('server_chars_edit')
         <div class="row">
             <div class="col-md-12">
@@ -537,6 +562,23 @@
                     { data: 'fine', name: 'fine' },
                     { data: 'status', name: 'status' },
                     { data: 'action', name: 'action' }
+                ]
+            });
+            $('#record-comments-table').DataTable({
+                processing: true,
+                serverSide: true,
+                order: [[5, 'desc']],
+                ajax: '{{ route('server.record-comments.data.char',["char_id" => $char->id]) }}',
+                columns:[
+                    { data: 'id', name: 'id' },
+                    { data: 'record_type', name: 'record_type' },
+                    { data: 'author', name: 'author' },
+                    { data: 'body', name: 'body' },
+                    { data: 'game_id', name: 'game_id' },
+                    { data: 'created_at', name: 'created_at' },
+                    { data: 'updated_at', name: 'updated_at' },
+                    { data: 'status', name: 'status', orderable: false, searchable: false },
+                    { data: 'action', name: 'action', orderable: false, searchable: false }
                 ]
             });
             @can('server_chars_show')

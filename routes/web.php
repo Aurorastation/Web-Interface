@@ -142,6 +142,13 @@ Route::group(['middleware' => 'web'], function () {
             Route::get('/data/char/{char_id}', ['as' => 'server.incidents.data.char', 'uses' => 'Server\IncidentController@getIncidentDataChar']);
         });
 
+        Route::group(['prefix' => 'record-comments'], function () {
+            Route::get('/{comment_id}/show', ['as' => 'server.record-comments.show.get', 'uses' => 'Server\RecordCommentController@getShow']);
+            Route::get('/{comment_id}/delete', ['as' => 'server.record-comments.delete.get', 'uses' => 'Server\RecordCommentController@getDelete']);
+            Route::get('/{comment_id}/restore', ['as' => 'server.record-comments.restore.get', 'uses' => 'Server\RecordCommentController@getRestore']);
+            Route::get('/data/char/{char_id}', ['as' => 'server.record-comments.data.char', 'uses' => 'Server\RecordCommentController@getRecordCommentDataChar']);
+        });
+
         Route::group(['prefix' => 'form'], function () {
             Route::get('', ['as' => 'admin.forms.index', 'uses' => 'Server\FormController@index']);
             Route::get('/{form_id}/edit', ['as' => 'admin.forms.edit.get', 'uses' => 'Server\FormController@getEdit']);
