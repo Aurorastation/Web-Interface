@@ -23,6 +23,12 @@
                         <td><b>Author:</b></td>
                         <td>{{$comment->author}}</td>
                     </tr>
+                    @can('server_players_incidents_show')
+                        <tr>
+                            <td><b>Creator ckey:</b></td>
+                            <td>{{$comment->created_by}}</td>
+                        </tr>
+                    @endcan
                     <tr>
                         <td><b>Comment:</b></td>
                         <td>{!! nl2br(e($comment->body)) !!}</td>
